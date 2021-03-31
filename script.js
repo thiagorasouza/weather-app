@@ -28,8 +28,10 @@ const switchBtn = document.querySelector('.switch-unit');
 
 
 // ----------
-// BROWSER GEOLOCATION
+// INITIALIZATION
 // ----------
+newLocation.value = localStorage.getItem('location');
+
 if ('geolocation' in navigator) {  
   // console.log('Have geolocation');
   navigator.geolocation.getCurrentPosition(printGeolocation, printRandomLocation);
@@ -46,7 +48,9 @@ updateBtn.addEventListener('click', updateLocation);
 switchBtn.addEventListener('click', switchUnit);
 
 function updateLocation() {
-  fetchWeatherAPI(newLocation.value);
+  let location = newLocation.value;
+  localStorage.setItem('location', location);
+  fetchWeatherAPI(location);
 }
 
 function switchUnit() {

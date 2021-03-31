@@ -8,7 +8,7 @@ A weather application to get the temperature, weather condition and whether it i
 - [x] Prints the temperature and weather condition in the current location with local units (celsius, fahrenheit...)
 - [x] The user can type in a new location and get updated weather conditions
 - [x] The user can switch temperature units
-- [ ] The app remembers the last location the user typed
+- [x] The app remembers the last location the user typed
 
 ## Useful links and resources
 
