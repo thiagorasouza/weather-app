@@ -11,6 +11,11 @@ const TOP_CAPITALS = [
   'Buenos Aires', 'Bangkok', 'Rio de Janeiro', 'Viena'
 ];
 
+const FAHRENHEIT_COUNTRIES = [
+  'United States', 'Bahamas', 'Cayman Islands',
+  'Liberia', 'Palau', 'Micronesia', 'Marshall Islands'
+];
+
 // -----------
 // DOM LINKS
 // -----------
@@ -49,7 +54,7 @@ function processWeatherAPI(obj) {
   let loc = obj.location;
   let cur = obj.current;
   printLocation(loc.name, loc.region, loc.country);
-  printWeather(cur.condition.text, cur.temp_c, cur.temp_f, cur.last_updated);
+  printWeather(loc.country, cur.condition.text, cur.temp_c, cur.temp_f, cur.last_updated);
   displayIcon(cur.condition.icon);
 }
 
@@ -81,9 +86,15 @@ function printLocation(name, region, country) {
   city.textContent = name + ', ' + region + ', ' + country;
 }
 
-function printWeather(text, celsius, fahrenheit, stamp) {
+function printWeather(country, text, celsius, fahrenheit, stamp) {
   // console.log(temp);
-  temperature.textContent = celsius + '°C';
+  let temp;
+  if (FAHRENHEIT_COUNTRIES.includes(country)) {
+    temp = fahrenheit + '°F';
+  } else {
+    temp = celsius + '°C';
+  }
+  temperature.textContent = temp;
   condition.textContent = text;
 }
 
