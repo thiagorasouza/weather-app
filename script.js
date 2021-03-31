@@ -22,6 +22,10 @@ const FAHRENHEIT_COUNTRIES = [
 const city = document.querySelector('.city');
 const temperature = document.querySelector('.temperature');
 const condition = document.querySelector('.condition');
+const newLocation = document.getElementById('new-location');
+const update = document.querySelector('.update');
+
+
 
 // ----------
 // BROWSER GEOLOCATION
@@ -32,6 +36,16 @@ if ('geolocation' in navigator) {
 } else {
   // console.log('No geolocation');
   printRandomLocation();
+}
+
+// ----------
+// USER REQUESTS
+// ----------
+newLocation.addEventListener('change', updateLocation);
+update.addEventListener('click', updateLocation);
+
+function updateLocation(e) {
+  fetchWeatherAPI(newLocation.value);
 }
 
 // ---------
