@@ -12,7 +12,7 @@ const TOP_CAPITALS = [
 ];
 
 const FAHRENHEIT_COUNTRIES = [
-  'United States', 'Bahamas', 'Cayman Islands',
+  'United States', 'United States of America', 'Bahamas', 'Cayman Islands',
   'Liberia', 'Palau', 'Micronesia', 'Marshall Islands'
 ];
 
@@ -23,8 +23,8 @@ const city = document.querySelector('.city');
 const temperature = document.querySelector('.temperature');
 const condition = document.querySelector('.condition');
 const newLocation = document.getElementById('new-location');
-const update = document.querySelector('.update');
-
+const updateBtn = document.querySelector('.update');
+const switchBtn = document.querySelector('.switch-unit');
 
 
 // ----------
@@ -42,10 +42,15 @@ if ('geolocation' in navigator) {
 // USER REQUESTS
 // ----------
 newLocation.addEventListener('change', updateLocation);
-update.addEventListener('click', updateLocation);
+updateBtn.addEventListener('click', updateLocation);
+switchBtn.addEventListener('click', switchUnit);
 
-function updateLocation(e) {
+function updateLocation() {
   fetchWeatherAPI(newLocation.value);
+}
+
+function switchUnit() {
+  temperature.textContent = convertTemperature(temperature.textContent);
 }
 
 // ---------
@@ -110,6 +115,10 @@ function printWeather(country, text, celsius, fahrenheit, stamp) {
   }
   temperature.textContent = temp;
   condition.textContent = text;
+
+  switchUnit = () => {
+    
+  }
 }
 
 function displayIcon(url) {
@@ -125,4 +134,15 @@ function randomCoordinates() {
     lat: randomCoord(90),
     lon: randomCoord(180)
   }
+}
+
+function convertTemperature(temp) {
+  let [value, unit] = temp.split('°');
+  let converted = temp;
+  if (unit === 'C') {
+    converted = (value * (9/5) + 32).toFixed(1) + '°F';
+  } else if (unit === 'F') {
+    converted = ((value - 32) * (5/9)).toFixed(1) + '°C';
+  }
+  return converted;
 }
