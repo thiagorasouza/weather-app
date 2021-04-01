@@ -44,7 +44,6 @@ if ('geolocation' in navigator) {
 // USER REQUESTS
 // ----------
 newLocation.addEventListener('change', updateLocation);
-updateBtn.addEventListener('click', updateLocation);
 switchBtn.addEventListener('click', switchUnit);
 
 function updateLocation() {
