@@ -43,10 +43,12 @@ if ('geolocation' in navigator) {
 // ----------
 // USER REQUESTS
 // ----------
-newLocation.addEventListener('change', updateLocation);
+newLocation.addEventListener('keyup', e => e.key === 'Enter' && updateLocation());
+// newLocation.addEventListener('change', updateLocation);
 switchBtn.addEventListener('click', switchUnit);
 
 function updateLocation() {
+  // console.log(e.key);
   let location = newLocation.value;
   localStorage.setItem('location', location);
   fetchWeatherAPI(location);
