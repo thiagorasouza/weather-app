@@ -147,12 +147,18 @@ function randomCoordinates() {
 }
 
 function convertTemperature(temp) {
-  let [value, unit] = temp.split('°');
-  let converted = temp;
-  if (unit === 'C') {
-    converted = (value * (9/5) + 32).toFixed(1) + '°F';
-  } else if (unit === 'F') {
-    converted = ((value - 32) * (5/9)).toFixed(1) + '°C';
+  const removeZero = (num) => {
+    let [digits, decimal] = num.split('.');
+    return decimal == 0 ? digits : num;
   }
+
+  let [value, unit] = temp.split('°');
+  let converted;
+  if (unit === 'C') {
+    converted = removeZero((value * (9/5) + 32).toFixed(1)) + '°F';
+  } else if (unit === 'F') {
+    converted = removeZero(((value - 32) * (5/9)).toFixed(1)) + '°C';
+  }
+
   return converted;
 }
