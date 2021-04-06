@@ -44,7 +44,22 @@ footer {
   /* font-weight: 400; */
 }
 
+.condition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: white; */
+}
+
+.condition-icon {
+  width: calc(3.2rem + 0.15vw);
+  height: calc(3.2rem + 0.15vw);
+  margin-left: 5px;
+  background-size: contain;
+  /* background-color: red; */
+}
+
 header { background-color: rgb(183, 216, 208); }
 main { background-color: rgb(198, 190, 245); }
-main > div { background-color: white; }
+/* main > div { background-color: white; } */
 footer { background-color: rgb(235, 175, 225); }

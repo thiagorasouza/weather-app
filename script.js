@@ -21,7 +21,8 @@ const FAHRENHEIT_COUNTRIES = [
 // -----------
 const city = document.querySelector('.city');
 const temperature = document.querySelector('.temperature');
-const condition = document.querySelector('.condition');
+const conditionText = document.querySelector('.condition-text');
+const conditionIcon = document.querySelector('.condition-icon');
 const newLocation = document.getElementById('new-location');
 const updateBtn = document.querySelector('.update');
 const switchBtn = document.querySelector('.switch-unit');
@@ -75,6 +76,7 @@ function fetchWeatherAPI(query) {
 }
 
 function processWeatherAPI(obj) {
+  // console.log(obj);
   let loc = obj.location;
   let cur = obj.current;
   printLocation(loc.name, loc.region, loc.country);
@@ -119,7 +121,7 @@ function printWeather(country, text, celsius, fahrenheit, stamp) {
     temp = celsius + '°C';
   }
   temperature.textContent = temp;
-  condition.textContent = text;
+  conditionText.textContent = text;
 
   switchUnit = () => {
     
@@ -127,7 +129,10 @@ function printWeather(country, text, celsius, fahrenheit, stamp) {
 }
 
 function displayIcon(url) {
-  // todo
+  url = 'http:' + url;
+  console.log(url);
+  conditionIcon.style.backgroundImage = `url('${url}')`;
+  console.log(conditionIcon.style.backgroundImage);
 }
 
 // -----------
