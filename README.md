@@ -16,7 +16,7 @@ Layout:
 
 - [x] Page has basic block layout that looks appropriate on mobile and desktop browser
 - [x] Typography is responsive for different viewport widths
-- [ ] User sees distinctive typography for different types of text in the page
+- [x] User sees distinctive typography for different types of text in the page
 - [ ] Each weather condition is displayed with its respective icon
 
 ## Useful links and resources

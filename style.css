@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Open+Sans&display=swap');
+
 html {
   font-size: 10px;
   box-sizing: border-box;
@@ -12,6 +14,7 @@ body {
   min-height: 100vh;
   flex-direction: column;
   font-size: calc(1.5rem + 0.15vw);
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
 header {
@@ -37,6 +40,8 @@ footer {
 
 .temperature {
   font-size: calc(8rem + 3vw);
+  font-family: 'Inter', sans-serif;
+  /* font-weight: 400; */
 }
 
 header { background-color: rgb(183, 216, 208); }
