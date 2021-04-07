@@ -31,13 +31,12 @@ const switchBtn = document.querySelector('.switch-unit');
 // ----------
 // INITIALIZATION
 // ----------
-newLocation.value = localStorage.getItem('location');
-
-if ('geolocation' in navigator) {  
-  // console.log('Have geolocation');
+let savedLocation = localStorage.getItem('location');
+if (savedLocation) {
+  fetchWeatherAPI(savedLocation)
+} else if ('geolocation' in navigator) {  
   navigator.geolocation.getCurrentPosition(printGeolocation, printRandomLocation);
 } else {
-  // console.log('No geolocation');
   printRandomLocation();
 }
 
@@ -130,9 +129,9 @@ function printWeather(country, text, celsius, fahrenheit, stamp) {
 
 function displayIcon(url) {
   url = 'http:' + url;
-  console.log(url);
   conditionIcon.style.backgroundImage = `url('${url}')`;
-  console.log(conditionIcon.style.backgroundImage);
+  // console.log(url);
+  // console.log(conditionIcon.style.backgroundImage);
 }
 
 // -----------
