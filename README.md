@@ -10,7 +10,9 @@ Functionality:
 - [x] Prints the temperature and weather condition in the current location with local units (celsius, fahrenheit...)
 - [x] The user can type in a new location and get updated weather conditions
 - [x] The user can switch temperature units
-- [x] The app remembers the last location the user typed
+- [x] ~~The app remembers the last location the user typed~~
+- [ ] The app only remembers the last location if it was **typed** by the user, and so displays its weather conditions on any new accesses
+- [ ] The user can go back and check the weather conditions from it's geolocation after typing and searching for other locations
 
 Layout:
 
@@ -18,6 +20,11 @@ Layout:
 - [x] Typography is responsive for different viewport widths
 - [x] User sees distinctive typography for different types of text in the page
 - [x] Each weather condition is displayed with its respective icon
+- [ ] Sections and buttons have appropriate colors and overall style
+- [ ] Location input has descriptive text and is spaced right below the temperature
+- [ ] Footer contains developer information and links
+- [ ] The page title is updated with city name and temperature
+- [ ] The page has favicon
 
 ## Useful links and resources
 
