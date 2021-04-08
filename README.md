@@ -20,7 +20,7 @@ Layout:
 - [x] Typography is responsive for different viewport widths
 - [x] User sees distinctive typography for different types of text in the page
 - [x] Each weather condition is displayed with its respective icon
-- [ ] Sections and buttons have appropriate colors and overall style
+- [x] Sections and buttons have appropriate colors and overall style
 - [ ] Location input has descriptive text and is spaced right below the temperature
 - [ ] Footer contains developer information and links
 - [ ] The page title is updated with city name and temperature

@@ -20,6 +20,18 @@ body {
 header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 0.35em 0.75em;
+  border-bottom: 1px solid #bbb;
+  background-color: rgb(235, 235, 235);
+}
+
+button {
+  color: #fff;
+  padding: 0.25em 0.5em;
+  border: none;
+  cursor: pointer;
+  background-color: rgb(44, 44, 44);
 }
 
 main {
@@ -31,7 +43,11 @@ main {
 }
 
 footer {
+  font-size: 0.8em;
   text-align: center;
+  padding: 0.35em 0.75em;
+  border-top: 1px solid #bbb;
+  background-color: rgb(235, 235, 235);
 }
 
 .temperature, .condition {
@@ -65,7 +81,7 @@ footer {
   align-items: center;
 }
 
-header { background-color: rgb(183, 216, 208); }
-main { background-color: rgb(198, 190, 245); }
+/* header { background-color: rgb(183, 216, 208); } */
+/* main { background-color: rgb(198, 190, 245); } */
 /* main > div { background-color: white; } */
-footer { background-color: rgb(235, 175, 225); }
+/* footer { background-color: rgb(235, 175, 225); } */
