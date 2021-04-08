@@ -12,7 +12,7 @@ Functionality:
 - [x] The user can switch temperature units
 - [x] ~~The app remembers the last location the user typed~~
 - [x] The app only remembers the last location if it was **typed** by the user, and so displays its weather conditions on any new accesses
-- [ ] The user can go back and check the weather conditions from it's geolocation after typing and searching for other locations
+- [x] The user can go back and check the weather conditions from it's geolocation after typing and searching for other locations
 
 Layout:
 

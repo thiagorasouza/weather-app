@@ -59,6 +59,12 @@ footer {
   /* background-color: red; */
 }
 
+.geolocation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 header { background-color: rgb(183, 216, 208); }
 main { background-color: rgb(198, 190, 245); }
 /* main > div { background-color: white; } */

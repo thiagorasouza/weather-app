@@ -26,6 +26,9 @@ const conditionIcon = document.querySelector('.condition-icon');
 const newLocation = document.getElementById('new-location');
 const updateBtn = document.querySelector('.update');
 const switchBtn = document.querySelector('.switch-unit');
+const geolocationBtn = document.querySelector('.get-geolocation');
+const info = document.querySelector('.info');
+// console.log(geolocationBtn);
 
 
 // ----------
@@ -33,11 +36,12 @@ const switchBtn = document.querySelector('.switch-unit');
 // ----------
 let savedLocation = localStorage.getItem('location');
 if (savedLocation) {
-  fetchWeatherAPI(savedLocation)
-} else if ('geolocation' in navigator) {  
-  navigator.geolocation.getCurrentPosition(printGeolocation, printRandomLocation);
+  fetchWeatherAPI(savedLocation);
 } else {
-  printRandomLocation();
+  getGeolocation(() => {
+    printRandomLocation();
+    printInfo();
+  });
 }
 
 // ----------
@@ -46,6 +50,19 @@ if (savedLocation) {
 newLocation.addEventListener('keyup', e => e.key === 'Enter' && updateLocation());
 // newLocation.addEventListener('change', updateLocation);
 switchBtn.addEventListener('click', switchUnit);
+geolocationBtn.addEventListener('click', () => {
+  localStorage.removeItem('location');
+  getGeolocation(printInfo);
+});
+
+function getGeolocation(fallback) {
+  // let notBlocked = false;
+  if ('geolocation' in navigator) {  
+    navigator.geolocation.getCurrentPosition(printGeolocation, fallback);
+  }
+  // console.log(notBlocked);
+  // return notBlocked;
+}
 
 function updateLocation() {
   // console.log(e.key);
@@ -83,16 +100,6 @@ function processWeatherAPI(obj) {
   displayIcon(cur.condition.icon);
 }
 
-function fetchLocationAPI(query) {
-  let url = `http://api.positionstack.com/v1/reverse?access_key=${LOCATION_API_KEY}&query=${query}&limit=1`;
-  // todo
-}
-
-// function fetchOpenWeather() {
-//   let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OPEN_WEATHER_KEY}`;
-//   // todo
-// }
-
 function fetchAPI(url, callback) {
   fetch(url)
     .then(response => response.json())
@@ -104,7 +111,8 @@ function fetchAPI(url, callback) {
 // DISPLAY INFORMATION
 // ------------
 function printRandomLocation() {
-  printLocation(TOP_CAPITALS[Math.floor(Math.random() * 10)]);
+  let location = TOP_CAPITALS[Math.floor(Math.random() * 10)];
+  fetchWeatherAPI(location);
 }
 
 function printLocation(name, region, country) {
@@ -125,6 +133,10 @@ function printWeather(country, text, celsius, fahrenheit, stamp) {
   switchUnit = () => {
     
   }
+}
+
+function printInfo() {
+  info.textContent = 'Geolocation not available or blocked.';
 }
 
 function displayIcon(url) {
