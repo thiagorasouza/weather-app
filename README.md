@@ -13,6 +13,7 @@ Functionality:
 - [x] ~~The app remembers the last location the user typed~~
 - [x] The app only remembers the last location if it was **typed** by the user, and so displays its weather conditions on any new accesses
 - [x] The user can go back and check the weather conditions from it's geolocation after typing and searching for other locations
+- [ ] The page title is updated with city name and temperature
 
 Layout:
 
@@ -23,8 +24,7 @@ Layout:
 - [x] Sections and buttons have appropriate colors and overall style
 - [x] Location input has descriptive text and is spaced right below the temperature
 - [x] Footer contains developer information and links
-- [ ] The page title is updated with city name and temperature
-- [ ] The page has favicon
+- [ ] The page has a favicon
 
 ## Useful links and resources
 
