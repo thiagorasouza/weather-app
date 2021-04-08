@@ -21,8 +21,8 @@ Layout:
 - [x] User sees distinctive typography for different types of text in the page
 - [x] Each weather condition is displayed with its respective icon
 - [x] Sections and buttons have appropriate colors and overall style
-- [ ] Location input has descriptive text and is spaced right below the temperature
-- [ ] Footer contains developer information and links
+- [x] Location input has descriptive text and is spaced right below the temperature
+- [x] Footer contains developer information and links
 - [ ] The page title is updated with city name and temperature
 - [ ] The page has favicon
 

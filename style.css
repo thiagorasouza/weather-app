@@ -75,6 +75,19 @@ footer {
   /* background-color: red; */
 }
 
+.user-input {
+  margin: 2em 0 2em 0;
+  background-color: #ccc;
+}
+
+.user-input > input[type="text"] {
+  width: 15em;
+  border: 2px solid #333;
+  padding: 0.25em 0.35em;
+  line-height: 1.5;
+  outline: none;
+}
+
 .geolocation {
   display: flex;
   flex-direction: column;
