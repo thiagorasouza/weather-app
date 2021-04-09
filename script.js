@@ -72,7 +72,9 @@ function updateLocation() {
 }
 
 function switchUnit() {
-  temperature.textContent = convertTemperature(temperature.textContent);
+  let converted = convertTemperature(temperature.textContent);
+  temperature.textContent = converted;
+  changeTitle('same', converted);
 }
 
 // ---------
@@ -86,6 +88,11 @@ function printGeolocation(position) {
   fetchWeatherAPI(lat + ',' + lon);
 }
 
+function printRandomLocation() {
+  let location = TOP_CAPITALS[Math.floor(Math.random() * 10)];
+  fetchWeatherAPI(location);
+}
+
 function fetchWeatherAPI(query) {
   let url = `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${query}`;
   fetchAPI(url, processWeatherAPI);
@@ -95,8 +102,16 @@ function processWeatherAPI(obj) {
   // console.log(obj);
   let loc = obj.location;
   let cur = obj.current;
+
+  let temp;
+  if (FAHRENHEIT_COUNTRIES.includes(loc.country)) {
+    temp = cur.temp_f + '°F';
+  } else {
+    temp = cur.temp_c + '°C';
+  }
   printLocation(loc.name, loc.region, loc.country);
-  printWeather(loc.country, cur.condition.text, cur.temp_c, cur.temp_f, cur.last_updated);
+  printWeather(loc.country, cur.condition.text, temp, cur.last_updated);
+  changeTitle(loc.name, temp);
   displayIcon(cur.condition.icon);
 }
 
@@ -110,29 +125,14 @@ function fetchAPI(url, callback) {
 // -----------
 // DISPLAY INFORMATION
 // ------------
-function printRandomLocation() {
-  let location = TOP_CAPITALS[Math.floor(Math.random() * 10)];
-  fetchWeatherAPI(location);
-}
 
 function printLocation(name, region, country) {
   city.textContent = name + ', ' + region + ', ' + country;
 }
 
-function printWeather(country, text, celsius, fahrenheit, stamp) {
-  // console.log(temp);
-  let temp;
-  if (FAHRENHEIT_COUNTRIES.includes(country)) {
-    temp = fahrenheit + '°F';
-  } else {
-    temp = celsius + '°C';
-  }
+function printWeather(country, text, temp, stamp) {
   temperature.textContent = temp;
   conditionText.textContent = text;
-
-  switchUnit = () => {
-    
-  }
 }
 
 function printInfo() {
@@ -144,6 +144,13 @@ function displayIcon(url) {
   conditionIcon.style.backgroundImage = `url('${url}')`;
   // console.log(url);
   // console.log(conditionIcon.style.backgroundImage);
+}
+
+function changeTitle(city, temp) {
+  if (city == 'same') {
+    city = document.title.split(',')[0];
+  }
+  document.title = city + ', ' + temp + ' - Weather App';
 }
 
 // -----------
