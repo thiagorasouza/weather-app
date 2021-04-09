@@ -24,7 +24,7 @@ Layout:
 - [x] Sections and buttons have appropriate colors and overall style
 - [x] Location input has descriptive text and is spaced right below the temperature
 - [x] Footer contains developer information and links
-- [ ] The page has a favicon
+- [x] The page has a favicon
 
 ## Useful links and resources
 

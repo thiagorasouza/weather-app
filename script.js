@@ -28,6 +28,7 @@ const updateBtn = document.querySelector('.update');
 const switchBtn = document.querySelector('.switch-unit');
 const geolocationBtn = document.querySelector('.get-geolocation');
 const info = document.querySelector('.info');
+const favIcon = document.querySelector("link[rel='shortcut icon']");
 // console.log(geolocationBtn);
 
 
@@ -142,6 +143,7 @@ function printInfo() {
 function displayIcon(url) {
   url = 'http:' + url;
   conditionIcon.style.backgroundImage = `url('${url}')`;
+  favIcon.href = url;
   // console.log(url);
   // console.log(conditionIcon.style.backgroundImage);
 }
