@@ -14,6 +14,7 @@ Functionality:
 - [x] The app only remembers the last location if it was **typed** by the user, and so displays its weather conditions on any new accesses
 - [x] The user can go back and check the weather conditions from it's geolocation after typing and searching for other locations
 - [x] The page title is updated with city name and temperature
+- [ ] Unit preference is saved across sections
 
 Layout:
 
@@ -25,6 +26,11 @@ Layout:
 - [x] Location input has descriptive text and is spaced right below the temperature
 - [x] Footer contains developer information and links
 - [x] The page has a favicon
+
+Fine Adjustment:
+
+- [ ] Refactor code and give proper function names
+- [ ] Final style adjustments
 
 ## Useful links and resources
 
