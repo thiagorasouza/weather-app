@@ -30,7 +30,7 @@ Layout:
 Fine Adjustment:
 
 - [ ] Refactor code and give proper function names
-- [ ] Final style adjustments
+- [x] Final style adjustments
 
 ## Useful links and resources
 

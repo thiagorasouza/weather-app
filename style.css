@@ -76,7 +76,7 @@ footer {
 }
 
 .user-input {
-  margin: 2em 0 2em 0;
+  margin: 2em 0;
   background-color: #ccc;
 }
 
@@ -94,6 +94,14 @@ footer {
   align-items: center;
 }
 
+.get-geolocation {
+  padding: 0.55em 0.75em;
+}
+
+.info {
+  margin-top: 1em;
+  font-size: 0.8em;
+}
 /* header { background-color: rgb(183, 216, 208); } */
 /* main { background-color: rgb(198, 190, 245); } */
 /* main > div { background-color: white; } */
