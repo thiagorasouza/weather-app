@@ -36,8 +36,9 @@ const favIcon = document.querySelector("link[rel='shortcut icon']");
 // INITIALIZATION
 // ----------
 let savedLocation = localStorage.getItem('location');
+
 if (savedLocation) {
-  fetchWeatherAPI(savedLocation);
+  fetchWeatherAPI(savedLocation).then(updateUnit);
 } else {
   getGeolocation(() => {
     printRandomLocation();
@@ -53,6 +54,8 @@ newLocation.addEventListener('keyup', e => e.key === 'Enter' && updateLocation()
 switchBtn.addEventListener('click', switchUnit);
 geolocationBtn.addEventListener('click', () => {
   localStorage.removeItem('location');
+  localStorage.removeItem('unit');
+  // debugger;
   getGeolocation(printInfo);
 });
 
@@ -72,9 +75,19 @@ function updateLocation() {
   fetchWeatherAPI(location);
 }
 
+function updateUnit(temp) {
+  let savedUnit = localStorage.getItem('unit');
+  if (savedUnit && savedUnit != extractTempUnit(temp)) {
+    switchUnit();
+  }
+}
+
 function switchUnit() {
   let converted = convertTemperature(temperature.textContent);
   temperature.textContent = converted;
+
+  localStorage.setItem('unit', extractTempUnit(converted));
+
   changeTitle('same', converted);
 }
 
@@ -86,7 +99,7 @@ function printGeolocation(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
   // console.log(lat, lon);  
-  fetchWeatherAPI(lat + ',' + lon);
+  fetchWeatherAPI(lat + ',' + lon).then(updateUnit);
 }
 
 function printRandomLocation() {
@@ -96,7 +109,7 @@ function printRandomLocation() {
 
 function fetchWeatherAPI(query) {
   let url = `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${query}`;
-  fetchAPI(url, processWeatherAPI);
+  return fetchAPI(url, processWeatherAPI);
 }
 
 function processWeatherAPI(obj) {
@@ -104,20 +117,19 @@ function processWeatherAPI(obj) {
   let loc = obj.location;
   let cur = obj.current;
 
-  let temp;
-  if (FAHRENHEIT_COUNTRIES.includes(loc.country)) {
-    temp = cur.temp_f + '°F';
-  } else {
-    temp = cur.temp_c + '°C';
-  }
+  let is_fahrenheit = FAHRENHEIT_COUNTRIES.includes(loc.country);
+  let temp = is_fahrenheit ? cur.temp_f + '°F' : cur.temp_c + '°C';
+
   printLocation(loc.name, loc.region, loc.country);
   printWeather(loc.country, cur.condition.text, temp, cur.last_updated);
   changeTitle(loc.name, temp);
   displayIcon(cur.condition.icon);
+
+  return temp;
 }
 
 function fetchAPI(url, callback) {
-  fetch(url)
+   return fetch(url)
     .then(response => response.json())
     .then(callback)
     .catch(console.log);
@@ -156,10 +168,12 @@ function changeTitle(city, temp) {
 }
 
 // -----------
-// HELP FUNCTIONS
+// HELPER FUNCTIONS
 // -----------
 function randomCoordinates() {
+  
   let randomCoord = max => (Math.random() < 0.5 ? -1 : 1) * (Math.random() * max).toFixed(8)
+  
   return {
     lat: randomCoord(90),
     lon: randomCoord(180)
@@ -167,13 +181,10 @@ function randomCoordinates() {
 }
 
 function convertTemperature(temp) {
-  const removeZero = (num) => {
-    let [digits, decimal] = num.split('.');
-    return decimal == 0 ? digits : num;
-  }
 
-  let [value, unit] = temp.split('°');
+  let [value, unit] = [extractTempValue(temp), extractTempUnit(temp),]
   let converted;
+
   if (unit === 'C') {
     converted = removeZero((value * (9/5) + 32).toFixed(1)) + '°F';
   } else if (unit === 'F') {
@@ -182,3 +193,18 @@ function convertTemperature(temp) {
 
   return converted;
 }
+
+function extractTempValue(temp) {
+  return temp.split('°')[0];
+}
+
+function extractTempUnit(temp) {
+  return temp.split('°')[1];
+}
+
+function  removeZero(num) {
+  let [digits, decimals] = num.split('.');
+
+  return decimals == 0 ? digits : num;
+}
+
