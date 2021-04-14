@@ -107,7 +107,7 @@ function queryRandomCapital() {
 }
 
 function fetchWeatherAPI(query) {
-  let url = `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${query}`;
+  let url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${query}`;
   return fetch(url)
   .then(response => response.json())
   .then(processWeather)
