@@ -2,6 +2,9 @@
 
 A weather application to get the temperature, weather condition and whether it is day or night of a particular city using `accuweather`. A free weather api.
 
+See the project live at:
+https://thiagorasouza.github.io/weather-app/index.html
+
 ## User Stories
 
 Functionality:
