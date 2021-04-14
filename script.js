@@ -2,19 +2,12 @@
 // CONSTANTS
 // ---------
 const WEATHER_API_KEY = 'a1d6db9ef71d433d95205809213003';
-const LOCATION_API_KEY = '39e837d4df957a236ccf3189f7ed13cc';
-// const OPEN_WEATHER_KEY = '927173a69293c796dcf621f0eb2c045a';
-
-const TOP_CAPITALS = [
-  'London', 'Tokyo', 'Paris', 
-  'Rome', 'New York', 'Berlin', 
-  'Buenos Aires', 'Bangkok', 'Rio de Janeiro', 'Viena'
-];
-
-const FAHRENHEIT_COUNTRIES = [
-  'United States', 'United States of America', 'Bahamas', 'Cayman Islands',
-  'Liberia', 'Palau', 'Micronesia', 'Marshall Islands'
-];
+const TOP_CAPITALS = ['London', 'Tokyo', 'Paris',
+                      'Rome', 'New York', 'Berlin',
+                      'Buenos Aires', 'Bangkok', 'Rio de Janeiro', 'Viena'];
+const FAHRENHEIT_COUNTRIES = ['United States', 'United States of America', 'Bahamas',
+                              'Cayman Islands', 'Liberia', 'Palau',
+                              'Micronesia', 'Marshall Islands'];
 
 // -----------
 // DOM LINKS
@@ -23,166 +16,154 @@ const city = document.querySelector('.city');
 const temperature = document.querySelector('.temperature');
 const conditionText = document.querySelector('.condition-text');
 const conditionIcon = document.querySelector('.condition-icon');
+
 const newLocation = document.getElementById('new-location');
-const updateBtn = document.querySelector('.update');
+// Query location on ENTER even if input value hasn't changed
+newLocation.addEventListener('keyup', e => e.key === 'Enter' && queryLocation(e.target.value));
+
 const switchBtn = document.querySelector('.switch-unit');
+switchBtn.addEventListener('click', switchUnit);
+
 const geolocationBtn = document.querySelector('.get-geolocation');
+geolocationBtn.addEventListener('click', () => {
+  // Retrieving geolocation's weather conditions reset app's behavior to
+  // always display user's current location conditions
+  localStorage.removeItem('location');
+  localStorage.removeItem('unit');
+
+  queryGeolocation(printError);
+});
+
 const info = document.querySelector('.info');
 const favIcon = document.querySelector("link[rel='shortcut icon']");
-// console.log(geolocationBtn);
-
 
 // ----------
 // INITIALIZATION
 // ----------
-let savedLocation = localStorage.getItem('location');
 
-if (savedLocation) {
-  fetchWeatherAPI(savedLocation).then(updateUnit);
-} else {
-  getGeolocation(() => {
-    printRandomLocation();
-    printInfo();
-  });
+initLocation();
+
+function initLocation() {
+  let savedLocation = localStorage.getItem('location');
+  
+  if (savedLocation) {
+    fetchWeatherAPI(savedLocation).then(switchToSavedUnit);
+  } else {
+    queryGeolocation(() => {
+      // A random capital is picked if geolocation is not available
+      queryRandomCapital();
+      printError();
+    });
+  }
 }
 
 // ----------
 // USER REQUESTS
 // ----------
-newLocation.addEventListener('keyup', e => e.key === 'Enter' && updateLocation());
-// newLocation.addEventListener('change', updateLocation);
-switchBtn.addEventListener('click', switchUnit);
-geolocationBtn.addEventListener('click', () => {
-  localStorage.removeItem('location');
-  localStorage.removeItem('unit');
-  // debugger;
-  getGeolocation(printInfo);
-});
-
-function getGeolocation(fallback) {
-  // let notBlocked = false;
-  if ('geolocation' in navigator) {  
-    navigator.geolocation.getCurrentPosition(printGeolocation, fallback);
-  }
-  // console.log(notBlocked);
-  // return notBlocked;
-}
-
-function updateLocation() {
-  // console.log(e.key);
-  let location = newLocation.value;
-  localStorage.setItem('location', location);
-  fetchWeatherAPI(location);
-}
-
-function updateUnit(temp) {
+function switchToSavedUnit(temp) {
   let savedUnit = localStorage.getItem('unit');
-  if (savedUnit && savedUnit != extractTempUnit(temp)) {
+
+  if (savedUnit && savedUnit !== extractTempUnit(temp)) {
     switchUnit();
   }
 }
 
 function switchUnit() {
   let converted = convertTemperature(temperature.textContent);
-  temperature.textContent = converted;
 
+  temperature.textContent = converted;
   localStorage.setItem('unit', extractTempUnit(converted));
 
-  changeTitle('same', converted);
+  changePageTitle(converted);
 }
 
 // ---------
 // FETCH INFORMATION
 // ---------
-function printGeolocation(position) {
-  // console.log(position);
-  let lat = position.coords.latitude;
-  let lon = position.coords.longitude;
-  // console.log(lat, lon);  
-  fetchWeatherAPI(lat + ',' + lon).then(updateUnit);
+function queryGeolocation(fallback) {
+  if ('geolocation' in navigator) {  
+    navigator.geolocation.getCurrentPosition(queryPosition, fallback);
+  } else {
+    fallback();
+  }
 }
 
-function printRandomLocation() {
-  let location = TOP_CAPITALS[Math.floor(Math.random() * 10)];
+// position is a GeolocationAPI object
+function queryPosition(position) {
+  let lat = position.coords.latitude;
+  let lon = position.coords.longitude;
+  
+  fetchWeatherAPI(lat + ',' + lon).then(switchToSavedUnit);
+}
+
+function queryLocation(location) {
+  localStorage.setItem('location', location);
   fetchWeatherAPI(location);
+}
+
+function queryRandomCapital() {
+  let capital = TOP_CAPITALS[Math.floor(Math.random() * 10)];
+  fetchWeatherAPI(capital);
 }
 
 function fetchWeatherAPI(query) {
   let url = `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${query}`;
-  return fetchAPI(url, processWeatherAPI);
-}
-
-function processWeatherAPI(obj) {
-  // console.log(obj);
-  let loc = obj.location;
-  let cur = obj.current;
-
-  let is_fahrenheit = FAHRENHEIT_COUNTRIES.includes(loc.country);
-  let temp = is_fahrenheit ? cur.temp_f + '°F' : cur.temp_c + '°C';
-
-  printLocation(loc.name, loc.region, loc.country);
-  printWeather(loc.country, cur.condition.text, temp, cur.last_updated);
-  changeTitle(loc.name, temp);
-  displayIcon(cur.condition.icon);
-
-  return temp;
-}
-
-function fetchAPI(url, callback) {
-   return fetch(url)
-    .then(response => response.json())
-    .then(callback)
-    .catch(console.log);
+  return fetch(url)
+  .then(response => response.json())
+  .then(processWeather)
+  .catch(console.log);
 }
 
 // -----------
 // DISPLAY INFORMATION
 // ------------
+function processWeather(response) {
+  let loc = response.location;
+  let cur = response.current;
+
+  let is_fahrenheit = FAHRENHEIT_COUNTRIES.includes(loc.country);
+  let temp = is_fahrenheit ? cur.temp_f + '°F' : cur.temp_c + '°C';
+
+  printLocation(loc.name, loc.region, loc.country);
+  printWeather(cur.condition.text, temp);
+  changePageTitle(temp, loc.name);
+  displayIcon(cur.condition.icon);
+
+  return temp;
+}
 
 function printLocation(name, region, country) {
   city.textContent = name + ', ' + region + ', ' + country;
 }
 
-function printWeather(country, text, temp, stamp) {
+function printWeather(text, temp) {
   temperature.textContent = temp;
   conditionText.textContent = text;
 }
 
-function printInfo() {
+function printError() {
   info.textContent = 'Geolocation not available or blocked.';
 }
 
-function displayIcon(url) {
-  url = 'http:' + url;
+// Display weather icon on body and page title
+function displayIcon(host) {
+  let url = 'http:' + host;
   conditionIcon.style.backgroundImage = `url('${url}')`;
   favIcon.href = url;
-  // console.log(url);
-  // console.log(conditionIcon.style.backgroundImage);
 }
 
-function changeTitle(city, temp) {
-  if (city == 'same') {
-    city = document.title.split(',')[0];
-  }
+// Accepts 'same' as parameter for
+function changePageTitle(temp, new_city = null) {
+  let city = new_city ? new_city : document.title.split(',')[0];
   document.title = city + ', ' + temp + ' - Weather App';
 }
 
 // -----------
 // HELPER FUNCTIONS
 // -----------
-function randomCoordinates() {
-  
-  let randomCoord = max => (Math.random() < 0.5 ? -1 : 1) * (Math.random() * max).toFixed(8)
-  
-  return {
-    lat: randomCoord(90),
-    lon: randomCoord(180)
-  }
-}
 
 function convertTemperature(temp) {
-
-  let [value, unit] = [extractTempValue(temp), extractTempUnit(temp),]
+  let [value, unit] = [extractTempValue(temp), extractTempUnit(temp)]
   let converted;
 
   if (unit === 'C') {
@@ -194,6 +175,11 @@ function convertTemperature(temp) {
   return converted;
 }
 
+function  removeZero(num) {
+  let [digits, decimals] = num.split('.');
+  return decimals == 0 ? digits : num;
+}
+
 function extractTempValue(temp) {
   return temp.split('°')[0];
 }
@@ -201,10 +187,3 @@ function extractTempValue(temp) {
 function extractTempUnit(temp) {
   return temp.split('°')[1];
 }
-
-function  removeZero(num) {
-  let [digits, decimals] = num.split('.');
-
-  return decimals == 0 ? digits : num;
-}
-

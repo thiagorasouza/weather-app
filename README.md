@@ -29,7 +29,7 @@ Layout:
 
 Fine Adjustment:
 
-- [ ] Refactor code and give proper function names
+- [x] Refactor code and give proper function names
 - [x] Final style adjustments
 
 ## Useful links and resources
